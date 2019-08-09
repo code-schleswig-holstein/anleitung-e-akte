@@ -61,7 +61,8 @@ Die folgenden API-Zugriffe werden über den url-Client cURL (https://de.wikipedi
 ```bash
 curl -H'Authorization: e3cdb731-496f-407f-9304-e20642075a1a' \
     'http://192.168.152.133:5000/api/3/action/resource_create' \
-    --form upload=@Checkliste--form package_id=test-ohne-startdatum \
+    --form upload=@Checkliste-Barrierefreies-PDF.pdf \
+    --form package_id=test-ohne-startdatum \
     --form format=PDF \
     --form name='Checkliste barrierefreies PDF'
 ```
