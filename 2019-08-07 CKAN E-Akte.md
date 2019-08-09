@@ -55,6 +55,46 @@ einen weiteren API-Aufruf zu erledigen.
 
 Nun kann die PDF-Datei hochgeladen werden:
 
+Die folgenden API-Zugriffe werden über den url-Client cURL (https://de.wikipedia.org/wiki/CURL) durchgeführt. Es kann aber ebenso ein anderer Client verwendet werden.
+
+Über folgendes Kommando kann ein Client eine Datei hochladen:
+```bash
+curl -H'Authorization: e3cdb731-496f-407f-9304-e20642075a1a' \
+    'http://192.168.152.133:5000/api/3/action/resource_create' \
+    --form upload=@Checkliste--form package_id=test-ohne-startdatum \
+    --form format=PDF \
+    --form name='Checkliste barrierefreies PDF'
+```
+
+Daraufhin erhält der Client folgende Antwort von CKAN:
+```json
+{
+    "help": "http://192.168.152.133:5000/api/3/action/help_show?name=resource_create",
+    "success": true,
+    "result": {
+        "cache_last_updated": null,
+        "cache_url": null,
+        "mimetype_inner": null,
+        "hash": "",
+        "description": "",
+        "format": "PDF",
+        "url": "http://192.168.152.133:5000/dataset/b66f2ea4-3a25-42a5-88f8-bffbbdbb46be/resource/0929f4f5-d14c-4a0e-aea7-f293587d5b48/download/checkliste-barrierefreies-pdf.pdf",
+        "created": "2019-08-09T08:28:03.467267",
+        "state": "active",
+        "package_id": "b66f2ea4-3a25-42a5-88f8-bffbbdbb46be",
+        "last_modified": "2019-08-09T08:28:03.410142",
+        "mimetype": "application/pdf",
+        "url_type": "upload",
+        "position": 5,
+        "revision_id": "d1788a89-dbec-4b36-8711-5178bb63f6a5",
+        "size": 112437,
+        "datastore_active": false,
+        "id": "0929f4f5-d14c-4a0e-aea7-f293587d5b48",
+        "resource_type": null,
+        "name": "Checkliste barrierefreies PDF"
+    }
+}
+```
 
 
 ### Metadaten
