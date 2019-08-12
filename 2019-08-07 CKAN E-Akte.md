@@ -408,8 +408,8 @@ http://192.168.126.128/api/action/package_relationship_create \
 ```
 
 Dabei sind:
-+ `subject`: Name der *Collection*
-+ `object`: Name des *Dataset*
++ `subject`: Name der *Collection*,
++ `object`: Name des *Dataset*.
 
 Auf diese Anfrage schickt CKAN folgende Antwort:
 ```json
@@ -424,3 +424,37 @@ Auf diese Anfrage schickt CKAN folgende Antwort:
    }
 }
 ```
+
+## Löschen eines *Dataset*
+Zum Löschen eines *Dataset* muss die `id` oder der `name` des *Dataset* bekannt sein.
+
+### Beispiel für Löschen eines *Dataset*
+
+```bash
+curl -v 
+http://192.168.126.128/api/3/action/package_delete \
+    -H "Authorization:e3cdb731-496f-407f-9304-e20642075a1a" \
+    -d '{     
+        "id": "id-des-dataset"
+    }' 
+```
+
+Dabei ist:
++ `id`: Die `id` oder der `name` des *Dataset*.
+
+## Löschen einer *Resource*
+Zum Löschen einer *Resource* muss die `id` der *Resource* bekannt sein.
+
+### Beispiel für Löschen einer *Resource*
+
+```bash
+curl -v 
+http://192.168.126.128/api/3/action/resource_delete \
+    -H "Authorization:e3cdb731-496f-407f-9304-e20642075a1a" \
+    -d '{     
+        "id": "id-der-resource"
+    }' 
+```
+
+Dabei ist:
++ `id`: Die `id` der *Resource*.
