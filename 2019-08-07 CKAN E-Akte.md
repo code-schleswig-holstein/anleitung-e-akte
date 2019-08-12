@@ -1,15 +1,23 @@
-# Anbindung der E-Akte an CKAN <!-- omit in toc -->
+# Anbindung der E-Akte an CKAN
 
-## Inhalt <!-- omit in toc -->
-- [Einleitung](#einleitung)
-- [Authentifizierung](#authentifizierung)
-- [Anlegen eines Dokumentes und Metadaten an das Transparenzportal](#anlegen-eines-dokumentes-und-metadaten-an-das-transparenzportal)
-  - [Beispiel für Anlegen eines *Dataset*](#beispiel-f%c3%bcr-anlegen-eines-dataset)
-  - [Hinweise zum Anlegen von *Datasets*](#hinweise-zum-anlegen-von-datasets)
-- [Anlegen einer *Resource* an ein bestehendes Dataset](#anlegen-einer-resource-an-ein-bestehendes-dataset)
-  - [Beispiel für Upload einer Datei als Resource](#beispiel-f%c3%bcr-upload-einer-datei-als-resource)
+- [Anbindung der E-Akte an CKAN](#anbindung-der-e-akte-an-ckan)
+  - [Einleitung](#einleitung)
+  - [Authentifizierung](#authentifizierung)
+  - [Anlegen eines Dokumentes und Metadaten an das Transparenzportal](#anlegen-eines-dokumentes-und-metadaten-an-das-transparenzportal)
+    - [Beispiel für Anlegen eines *Dataset*](#beispiel-f%c3%bcr-anlegen-eines-dataset)
+    - [Hinweise zum Anlegen von *Datasets*](#hinweise-zum-anlegen-von-datasets)
+  - [Anlegen einer *Resource* an ein bestehendes Dataset](#anlegen-einer-resource-an-ein-bestehendes-dataset)
+    - [Beispiel für Upload einer Datei als Resource](#beispiel-f%c3%bcr-upload-einer-datei-als-resource)
+  - [Anlegen von *Collections*](#anlegen-von-collections)
+    - [Anlegen der *Collection*](#anlegen-der-collection)
+    - [Anlegen der Verknüpfung (*Relationship*)](#anlegen-der-verkn%c3%bcpfung-relationship)
+  - [Löschen eines *Dataset*](#l%c3%b6schen-eines-dataset)
+    - [Beispiel für Löschen eines *Dataset*](#beispiel-f%c3%bcr-l%c3%b6schen-eines-dataset)
+  - [Löschen einer *Resource*](#l%c3%b6schen-einer-resource)
+    - [Beispiel für Löschen einer *Resource*](#beispiel-f%c3%bcr-l%c3%b6schen-einer-resource)
 
 ## Einleitung
+
 Für die Kommunikation zum Transparenzportal wird das [CKAN API](http://docs.ckan.org/en/ckan-2.7.3/api/) verwendet.
 
 Als Metadatenmodell wird [DCAT-AP.de 1.0.2](https://www.dcat-ap.de/def/) verwendet. 
@@ -27,7 +35,7 @@ Für die Authentifizierung verwendet CKAN einen sogenannten `api_key`.
 
 Im Testsystem wurden zwei Nutzer angelegt:
 
-| organization  | `api_key`                              |
+| organization  | `api_key`                            |
 | ------------- | ------------------------------------ |
 | ministerium_a | 4ef9e986-8437-4ce7-a9cc-f486fba86757 |
 | ministerium_b | a08ebb75-329a-435b-af08-f322a7da41bd | 
@@ -200,7 +208,9 @@ Auf die obige Anfrage antwortet CKAN folgendermaßen:
 }
 ```
 
+
 ### Hinweise zum Anlegen von *Datasets*
+
 + Eine Liste der möglichen Lizenzen kann über folgende API-Anfrage bezogen werden:
     ```bash
     curl -X GET \
@@ -241,7 +251,9 @@ Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metada
 
 
 ### Beispiel für Upload einer Datei als Resource
+
 Über folgendes Kommando kann ein Client eine Datei hochladen:
+
 ```bash
 curl -H'Authorization: 1dc4ab92-5475-43a9-ae91-3b4aa8ab6aa0' \
     'http://transparenz-test.zitsh.de/api/3/action/resource_create' \
@@ -252,6 +264,7 @@ curl -H'Authorization: 1dc4ab92-5475-43a9-ae91-3b4aa8ab6aa0' \
 ```
 
 Daraufhin erhält der Client folgende Antwort von CKAN:
+
 ```json
 {
     "help": "http://192.168.152.133:5000/api/3/action/help_show?name=resource_create",
@@ -283,7 +296,9 @@ Daraufhin erhält der Client folgende Antwort von CKAN:
 
 Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden *Resource* und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zuletzt hochgeladene Dokument des Dateiformats unter der url 
 
-```http://transparenz-test.zitsh.decollection/<Name der Collection>/aktuell.<format>```
+```
+http://transparenz-test.zitsh.decollection/<Name der Collection>/aktuell.<format>
+```
 
 angezeigt wird.
 Die Sichtbarkeit der *Resource* wird durch die Sichtbarkeit des *Dataset* festgelegt. Das heißt, *Resourcen*, die einem privaten *Dataset* zugeordnet sind, sind für nicht-berechtigte Nutzer nicht sichtbar.
@@ -425,10 +440,15 @@ Auf diese Anfrage schickt CKAN folgende Antwort:
 }
 ```
 
+
 ## Löschen eines *Dataset*
+
 Zum Löschen eines *Dataset* muss die `id` oder der `name` des *Dataset* bekannt sein.
 
+
 ### Beispiel für Löschen eines *Dataset*
+
+Die folgende API-Anfrage löscht ein *Dataset* aus CKAN:
 
 ```bash
 curl -v 
@@ -442,10 +462,15 @@ http://192.168.126.128/api/3/action/package_delete \
 Dabei ist:
 + `id`: Die `id` oder der `name` des *Dataset*.
 
+
 ## Löschen einer *Resource*
+
 Zum Löschen einer *Resource* muss die `id` der *Resource* bekannt sein.
 
+
 ### Beispiel für Löschen einer *Resource*
+
+Die folgende API-Anfrage löscht eine *Resource* aus CKAN:
 
 ```bash
 curl -v 
