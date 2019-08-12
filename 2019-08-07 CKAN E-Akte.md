@@ -10,6 +10,7 @@ Regel um PDF-Dateien handeln.
 Dokumente (*Datasets*), die eine zeitliche Reihe bilden (jährliche Berichte, sich ändernde
 Geschäftsverteilungspläne), werden in einer Sammlung (*Collection*) zusammengefasst.
 
+
 ## Authentifizierung
 
 Für die Authentifizierung verwendet CKAN einen sogenannten `api_key`. 
@@ -21,46 +22,217 @@ Im Testsystem wurden zwei Nutzer angelegt:
 | ministerium_a | 4ef9e986-8437-4ce7-a9cc-f486fba86757 |
 | ministerium_b | a08ebb75-329a-435b-af08-f322a7da41bd | 
 
-## Verbindung zum CKAN
-
-Zunächst muss (hier in Python-Code) eine Verbindung zum CKAN-Server aufgebaut werden:
-
-```python
-r_ckan = RemoteCKAN('http://transparenz-test.zitsh.de', apikey=api_key)
-```
 
 ## Anlegen eines Dokumentes und Metadaten an das Transparenzportal
 
-Für jedes Dokument muss zunächst ein *Dataset* angelegt werden:
+Für jedes Dokument muss zunächst ein *Dataset* angelegt werden. Zur Beschreibung des *Dataset* werden mindestens folgende Metadaten benötigt (Pflichtangaben):
 
-```python
-r_ckan.action.package_create(
-             title='Titel (Pflichtangabe)',
-             notes='Beschreibung (optional)',
-             license_id='Lizenz',   # unsere Juristen klären noch, was hier angegeben wird
-             extras={
-                 'issued': 'Veröffentlichungsdatum (Pflichtangabe)',
-                 'temporal_start': 'Zeitraum Beginn (Pflichtangabe)',
-                 'temporal_end': 'Zeitraum Ende (optional)',
-                 'subject': 'Informationsgegenstand'
-             },
-             tags=['Schlagwort 1', Schlagwort 2'],
-             groups='Kategorie')
-```
+| Name des Metadatums   | Beschreibung      |
+|-----------------------|-------------------|
+| `title`       | Titel, des *Dataset*, wie er später in CKAN angezeigt wird |
+| `license_id`  | Identifikator der Lizenz für das *Dataset* (siehe Hinweise) |
+| `subject`     | URI des *Informationsgegenstands* des *Dataset* |
+| `owner_org`   | `id` der Organisation, die das *Dataset* erzeugt (siehe Hinweise) |
+| `issued`      | Veröffentlichungsdatum des *Dataset*, Format siehe Beispiel |
+| `notes`       | Beschreibung des *Dataset*, siehe Hinweis |
 
-CKAN wird auf diesen Aufruf den Identifikator des *Dataset* zurückliefern.
-
-
-Nun kann die dazugehörige Datei hochgeladen werden:
+Zusätzlich können folgende optionale Metadaten gesetzt werden:
+| Name des Metadatums   | Beschreibung      |
+|-----------------------|-------------------|
+| `temporal_start`  | Beginn des Bezugszeitraums des *Dataset*, Format siehe Beispiel |
+| `temporal_end`    | Ende des Bezugszeitraums des *Dataset*, Format siehe Beispiel |
+| `tags`            | Schlagworte, Format siehe Beispiel |
+| `groups`          | Kategorien denen das *Dataset* zugeordnet ist (siehe Hinweise), Format siehe Beispiel |
 
 Die folgenden API-Zugriffe werden über den url-Client cURL (https://de.wikipedia.org/wiki/CURL) durchgeführt. Es kann aber ebenso ein anderer Client verwendet werden.
 
+
+### Beispiel für Anlegen eines *Dataset*
+```bash
+curl -X POST \
+    'http://transparenz-test.zitsh.de/api/3/action/package_create' \
+    -H'Authorization: 1dc4ab92-5475-43a9-ae91-3b4aa8ab6aa0' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "title": "Testdatensatz",
+        "license_id": "http://dcat-ap.de/def/licenses/dl-zero-de/2.0",
+        "subject": "http://d-nb.info/gnd/4128022-2",
+        "owner_org": "2a6d6241-fdfd-4d9a-9106-8c658be43a27",
+        "groups": [
+            {"name": "soci"},
+            {"name": "educ"}
+        ],
+        "extras": [
+            {"key": "issued", "value": "2019-07-07T00:00:00"},
+            {"key": "temporal_start", "value": "2017-01-01T00:00:00"},
+            {"key": "temporal_end", "value": "2017-03-31T00:00:00"}
+        ],
+        "notes": "Dies ist ein Testdatensatz, der über die CKAN-API erstellt wurde.",
+        "tags": [
+            {"name": "Test"},
+            {"name": "API"}
+        ]
+    }'
+    
+```
+
+Auf die obige Anfrage antwortet CKAN folgendermaßen:
+```json
+{
+    "help": "http://185.223.104.9/api/3/action/help_show?name=package_create",
+    "success": true,
+    "result": {
+        "license_title": "Datenlizenz Deutschland \u2013 Zero \u2013 Version 2.0",
+        "maintainer": null,
+        "relationships_as_object": [],
+        "is_new": false,
+        "private": false,
+        "maintainer_email": null,
+        "num_tags": 2,
+        "id": "637875e5-fccf-4eab-ae2d-0cffee601725",
+        "metadata_created": "2019-08-12T08:07:21.760424",
+        "subject": "http://d-nb.info/gnd/4128022-2",
+        "metadata_modified": "2019-08-12T08:07:21.760432",
+        "author": null,
+        "author_email": null,
+        "successor_url": null,
+        "state": "active",
+        "version": null,
+        "creator_user_id": "cbc8c4a0-276f-43e9-a557-36468940ea65",
+        "type": "dataset",
+        "resources": [],
+        "num_resources": 0,
+        "tags": [
+            {
+                "vocabulary_id": null,
+                "state": "active",
+                "display_name": "API",
+                "id": "ea8ca1f3-7737-4058-9cf5-f1298e0a7bdd",
+                "name": "API"
+            },
+            {
+                "vocabulary_id": null,
+                "state": "active",
+                "display_name": "Test",
+                "id": "11bf96ec-a635-47c5-b052-befbc20cd03e",
+                "name": "Test"
+            }
+        ],
+        "daterange_prettified": "1. Quartal 2017",
+        "groups": [
+            {
+                "display_name": "Bev\u00f6lkerung und Gesellschaft",
+                "description": "",
+                "image_display_url": "",
+                "title": "Bev\u00f6lkerung und Gesellschaft",
+                "id": "soci",
+                "name": "soci"
+            },
+            {
+                "display_name": "Bildung, Kultur und Sport",
+                "description": "",
+                "image_display_url": "",
+                "title": "Bildung, Kultur und Sport",
+                "id": "educ",
+                "name": "educ"
+            }
+        ],
+        "license_id": "http://dcat-ap.de/def/licenses/dl-zero-de/2.0",
+        "relationships_as_subject": [],
+        "organization": {
+            "description": "",
+            "created": "2019-08-06T10:56:19.169508",
+            "title": "Test-Organisation",
+            "name": "test-organisation",
+            "is_organization": true,
+            "state": "active",
+            "image_url": "",
+            "revision_id": "e2db2344-707b-4481-9a23-e25e044fc600",
+            "type": "organization",
+            "id": "2a6d6241-fdfd-4d9a-9106-8c658be43a27",
+            "approval_status": "approved"
+        },
+        "name": "testdatensatz1",
+        "isopen": true,
+        "url": null,
+        "notes": "Dies ist ein Testdatensatz, der \u00fcber die CKAN-API erstellt wurde.",
+        "owner_org": "2a6d6241-fdfd-4d9a-9106-8c658be43a27",
+        "extras": [
+            {
+                "key": "issued",
+                "value": "2019-07-07T00:00:00"
+            },
+            {
+                "key": "licenseAttributionByText",
+                "value": ""
+            },
+            {
+                "key": "subject_text",
+                "value": "T\u00e4tigkeitsbericht"
+            },
+            {
+                "key": "temporal_end",
+                "value": "2017-03-31T00:00:00"
+            },
+            {
+                "key": "temporal_start",
+                "value": "2017-01-01T00:00:00"
+            }
+        ],
+        "license_url": "https://www.govdata.de/dl-de/zero-2-0",
+        "title": "Testdatensatz",
+        "revision_id": "bff35d90-a0a4-4911-add3-55d35e122433",
+        "predecessor_url": null
+    }
+}
+```
+
+### Hinweise:
++ Eine Liste der möglichen Lizenzen kann über folgende API-Anfrage bezogen werden:
+    ```bash
+    curl -X GET \
+        http://transparenz-test.zitsh.de/api/3/action/license_list
+    ```
++ Eine Liste der Organisationen inklusive der zugehörigen Identifikatoren (Feld `id`) kann über folgende API-Anfrage bezogen werden:
+    ```
+    curl -X POST \
+        http://transparenz-test.zitsh.de/api/3/action/organization_list \
+        -H 'Content-Type: application/json' \
+        -d '{
+            "all_fields": true
+        }'
+    ```
++ Für das Feld notes muss mindestens ein leerer String ("") übergeben werden.
++ Für das spätere Hinzufügen von *Resourcen* zum soeben erstellten *Dataset* muss sich die `id` des Datasets gemerkt werden. Sie befindet sich im Feld `result['id']` der Antwort.
++ Eine Liste der vorhandenen Kategorien kann über folgende API-Anfrage bezogen werden:
+    ```bash
+    curl -X POST \
+        http://transparenz-test.zitsh.de/api/3/action/group_list \
+        -H 'Content-Type: application/json' \
+        -d '{
+            "all_fields": true
+        }'
+    ```
+
+
+## Anlegen einer *Resource* an ein bestehendes Dataset
+
+Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metadaten benötigt:
+
+| Name des Metadatums   | Beschreibung      |
+|-----------------------|-------------------|
+| `package_id`  | `id` des übergeordneten Dataset |
+| `format`      | Dateiformat der Resource |
+| `name`        | Name der Resource, wie er in CKAN angezeigt wird |
+
+
+### Beispiel für Upload einer Datei als Resource
 Über folgendes Kommando kann ein Client eine Datei hochladen:
 ```bash
-curl -H'Authorization: e3cdb731-496f-407f-9304-e20642075a1a' \
-    'http://192.168.152.133:5000/api/3/action/resource_create' \
+curl -H'Authorization: 1dc4ab92-5475-43a9-ae91-3b4aa8ab6aa0' \
+    'http://transparenz-test.zitsh.de/api/3/action/resource_create' \
     --form upload=@Checkliste-Barrierefreies-PDF.pdf \
-    --form package_id=test-ohne-startdatum \
+    --form package_id=637875e5-fccf-4eab-ae2d-0cffee601725 \
     --form format=PDF \
     --form name='Checkliste barrierefreies PDF'
 ```
@@ -95,33 +267,41 @@ Daraufhin erhält der Client folgende Antwort von CKAN:
 }
 ```
 
-Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden Resource und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zu letzt Hochgeladene Dokument des Dateiformats mit dem Aufruf collection/<Name der Collection> /aktuell. <Type> angezeigt wird.
-Die Sichtbarkeit wird auf dem Dataset Level festgelegt.
+Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden *Resource* und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zuletzt hochgeladene Dokument des Dateiformats unter der url 
 
-## Anlegen von Sammlungen
+```http://transparenz-test.zitsh.decollection/<Name der Collection>/aktuell.<format>```
 
-Gehören mehre Dateien zu einer Sammlung, so muss zusätzlich zu den Datasets eine Collection angelegt werden. Und anschließend muss eine Relationship zwischen der Collection und den Datasets angelegt werden. 
+angezeigt wird.
+Die Sichtbarkeit der *Resource* wird durch die Sichtbarkeit des *Dataset* festgelegt. Das heißt, *Resourcen*, die einem privaten *Dataset* zugeordnet sind, sind für nicht-berechtigte Nutzer nicht sichtbar.
+
+
+## Anlegen von *Collections*
+
+Gehören mehre Dateien zu einer Sammlung, so muss zusätzlich zu den *Datasets* eine *Collection* angelegt werden. Anschließend muss eine Relationship zwischen der *Collection* und den *Datasets* angelegt werden. 
 
 
 ### Anlegen der Collection
 
 Die Collection ist ein Package ähnlich wie das Dataset. Eine Collection ist nicht sichtbar für Dritte, aber kann durch die API aufgerufen werden. 
 
-```
-curl -v http:// IP-Adresse /api/action/package_create -d 
+```bash
+curl -v http://transparenz-test.zitsh.de/api/action/package_create \
+    -H "Authorization: API-KEY " \
+    -d \
     '{  "name":"COLLECTION_NAME",
         "type": "collection",
         "owner_org": "ORGANIZATION"
     }' 
--H "Authorization: API-KEY "
 ```
 
 name : COLLECTION_NAME kann frei gewählt werden. Der Name kann nur aus Zahlen, kleinen Buchstaben und _ oder –  bestehen.
 Leerzeichen sind in einem Collectionanme nicht erlaubt.
 
-"owner_org": ORGANIZATION muss einer im CKAN bestehnden Organisation entsprechen.
+"owner_org": ORGANIZATION muss eine in CKAN bestehende Organisation sein (siehe Hinweis bei Anlegen *Dataset*).
 
-```
+Auf diese Anfrage schickt CKAN folgende Antwort:
+
+```json
 {
    "help":"http://10.0.2.15/api/3/action/help_show?name=package_create",
    "success":true,
@@ -170,8 +350,7 @@ Leerzeichen sind in einem Collectionanme nicht erlaubt.
          "id":"61263ac6-64cd-4048-90fc-767ddf45f3b7",
          "approval_status":"approved"
       },
-      "name":"colle* Connection #0 to host 192.168.126.128 left intact
-ction_name",
+      "name":"collection_name",
       "isopen":false,
       "url":null,
       "notes":null,
@@ -185,9 +364,9 @@ ction_name",
 }
 ```
 
-Im Falle dass die Collection schon existiert, wird folgende Anwort geliefert.
+Im Falle dass die Collection schon existiert, wird folgende Anwort geliefert:
 
-```
+```json
 {
    "help":"http://10.0.2.15/api/3/action/help_show?name=package_create",
    "success":false,
@@ -200,26 +379,28 @@ Im Falle dass die Collection schon existiert, wird folgende Anwort geliefert.
 }
 ```
 
-### Anlegen der Verknüpfung (Relationship)
 
-Um eine Datensatz einer Sammlung zuzufügen, muss eine Relationship zwischen dem Collection Objekt und dem Datensatz erstellt werden. Dies geschieht mit diesem Befehl. 
+### Anlegen der Verknüpfung (*Relationship*)
 
-```
+Um eine Datensatz einer Sammlung zuzufügen, muss eine *Relationship* zwischen der *Collection* und dem *Dataset* erstellt werden. Dies geschieht mit diesem Befehl. 
+
+```bash
 curl -v 
-http://192.168.126.128/api/action/package_relationship_create -d '{     
-        "subject":"test_collection", "object": "test-title51", "type": "parent_of"
-    }' -H "Authorization:e3cdb731-496f-407f-9304-e20642075a1a"
+http://192.168.126.128/api/action/package_relationship_create \
+    -H "Authorization:e3cdb731-496f-407f-9304-e20642075a1a" \
+    -d '{     
+        "subject":"test_collection",
+        "object": "test-title51",
+        "type": "parent_of"
+    }' 
 ```
 
-subject: Name der Collection
-object: Name des Datasets
+Dabei sind:
++ `subject`: Name der *Collection*
++ `object`: Name des *Dataset*
 
-type: "parent_of"
-
-Der Type wird zum jetztigen Zeitpunkt noch nicht Benutzt aber sollte konsistet gewählt werden.  
-
-Antwort:
-
+Auf diese Anfrage schickt CKAN folgende Antwort:
+```json
 {
    "help":"http://10.0.2.15/api/3/action/help_show?name=package_relationship_create",
    "success":true,
@@ -230,31 +411,4 @@ Antwort:
       "subject":"test-title51"
    }
 }
-
-
-
-### Metadaten
-
-* Titel
-* Informationsgegenstand
-* Veröffentlichungsdatum 
-* Beschreibung (optional) 
-* Lizenz
-* Kategorie (optional)
-* Zeitraum Beginn
-* Zeitraum Ende (optional)
-
-Was muss hier wie übertragen werden? Wie erfolgt die Verbindung? 
-
-Wie soll ein User Account erstellt werden, welche Rechte soll dieser User haben?
-
-Wie die Authentifizierung? Dateiformate etc.
-
-Was meldet das Transparenzportal in welcher Form zurück?
-
-
-
-## Löschen der Datei(en) und Metadaten im Transparenzportal> 
-Wie soll dieser Löschvorgang angestossen werden?
-
-Was meldet das Transparenzportal in welcher Form zurück?
+```

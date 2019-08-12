@@ -1,4 +1,6 @@
-Benjamin->Daniel:
-Bitte testen, ob die von mir hinzugefügten Befehle auch auf unserem Testsystem funktionieren und dann die url in der Anleitung ersetzen.
+Folgende fachliche Fragen können wir nicht klären:
 
-Bitte herausfinden, welche Metadaten eine Resource enthalten kann, und dokumentieren, wie man diese über die API hinzufügt. 
++ Was muss hier wie übertragen werden?
++ Wie erfolgt die Verbindung? 
++ Wie soll ein User Account erstellt werden, welche Rechte soll dieser User haben?
++ Löschen der Datei(en) und Metadaten im Transparenzportal: Wie soll dieser Löschvorgang angestossen werden?
