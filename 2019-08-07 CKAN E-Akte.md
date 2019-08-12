@@ -1,5 +1,15 @@
-# Anbindung der E-Akte an CKAN
+# Anbindung der E-Akte an CKAN <!-- omit in toc -->
 
+## Inhalt <!-- omit in toc -->
+- [Einleitung](#einleitung)
+- [Authentifizierung](#authentifizierung)
+- [Anlegen eines Dokumentes und Metadaten an das Transparenzportal](#anlegen-eines-dokumentes-und-metadaten-an-das-transparenzportal)
+  - [Beispiel für Anlegen eines *Dataset*](#beispiel-f%c3%bcr-anlegen-eines-dataset)
+  - [Hinweise zum Anlegen von *Datasets*](#hinweise-zum-anlegen-von-datasets)
+- [Anlegen einer *Resource* an ein bestehendes Dataset](#anlegen-einer-resource-an-ein-bestehendes-dataset)
+  - [Beispiel für Upload einer Datei als Resource](#beispiel-f%c3%bcr-upload-einer-datei-als-resource)
+
+## Einleitung
 Für die Kommunikation zum Transparenzportal wird das [CKAN API](http://docs.ckan.org/en/ckan-2.7.3/api/) verwendet.
 
 Als Metadatenmodell wird [DCAT-AP.de 1.0.2](https://www.dcat-ap.de/def/) verwendet. 
@@ -188,7 +198,7 @@ Auf die obige Anfrage antwortet CKAN folgendermaßen:
 }
 ```
 
-### Hinweise:
+### Hinweise zum Anlegen von *Datasets*
 + Eine Liste der möglichen Lizenzen kann über folgende API-Anfrage bezogen werden:
     ```bash
     curl -X GET \
