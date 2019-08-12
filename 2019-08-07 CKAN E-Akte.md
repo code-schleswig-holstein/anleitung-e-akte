@@ -27,10 +27,12 @@ Für die Authentifizierung verwendet CKAN einen sogenannten `api_key`.
 
 Im Testsystem wurden zwei Nutzer angelegt:
 
-| organization  | api_key                              |
+| organization  | `api_key`                              |
 | ------------- | ------------------------------------ |
 | ministerium_a | 4ef9e986-8437-4ce7-a9cc-f486fba86757 |
 | ministerium_b | a08ebb75-329a-435b-af08-f322a7da41bd | 
+
+Der `api_key` wird über den Header `Authorization` übergeben (siehe Beispiele unten).
 
 
 ## Anlegen eines Dokumentes und Metadaten an das Transparenzportal
@@ -205,7 +207,7 @@ Auf die obige Anfrage antwortet CKAN folgendermaßen:
         http://transparenz-test.zitsh.de/api/3/action/license_list
     ```
 + Eine Liste der Organisationen inklusive der zugehörigen Identifikatoren (Feld `id`) kann über folgende API-Anfrage bezogen werden:
-    ```
+    ```bash
     curl -X POST \
         http://transparenz-test.zitsh.de/api/3/action/organization_list \
         -H 'Content-Type: application/json' \
@@ -232,6 +234,7 @@ Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metada
 
 | Name des Metadatums   | Beschreibung      |
 |-----------------------|-------------------|
+| `upload`      | lokaler Pfad der Resource im Format `@/path/to/resource.format` |
 | `package_id`  | `id` des übergeordneten Dataset |
 | `format`      | Dateiformat der Resource |
 | `name`        | Name der Resource, wie er in CKAN angezeigt wird |
@@ -291,7 +294,7 @@ Die Sichtbarkeit der *Resource* wird durch die Sichtbarkeit des *Dataset* festge
 Gehören mehre Dateien zu einer Sammlung, so muss zusätzlich zu den *Datasets* eine *Collection* angelegt werden. Anschließend muss eine Relationship zwischen der *Collection* und den *Datasets* angelegt werden. 
 
 
-### Anlegen der Collection
+### Anlegen der *Collection*
 
 Die Collection ist ein Package ähnlich wie das Dataset. Eine Collection ist nicht sichtbar für Dritte, aber kann durch die API aufgerufen werden. 
 
@@ -299,16 +302,14 @@ Die Collection ist ein Package ähnlich wie das Dataset. Eine Collection ist nic
 curl -v http://transparenz-test.zitsh.de/api/action/package_create \
     -H "Authorization: API-KEY " \
     -d \
-    '{  "name":"COLLECTION_NAME",
+    '{  "name":"<collection_name>",
         "type": "collection",
-        "owner_org": "ORGANIZATION"
+        "owner_org": "<id_owner_org>"
     }' 
 ```
-
-name : COLLECTION_NAME kann frei gewählt werden. Der Name kann nur aus Zahlen, kleinen Buchstaben und _ oder –  bestehen.
-Leerzeichen sind in einem Collectionanme nicht erlaubt.
-
-"owner_org": ORGANIZATION muss eine in CKAN bestehende Organisation sein (siehe Hinweis bei Anlegen *Dataset*).
+Dabei sind:
++ `name` : collection_name kann frei gewählt werden. Der Name kann nur aus Zahlen, kleinen Buchstaben und _ oder –  bestehen. Leerzeichen sind in einem Collectionanme nicht erlaubt.
++ `owner_org`: id_owner_org muss die `id` einer in CKAN bestehende Organisation sein (siehe Hinweis bei Anlegen *Dataset*).
 
 Auf diese Anfrage schickt CKAN folgende Antwort:
 
@@ -389,7 +390,7 @@ Im Falle dass die Collection schon existiert, wird folgende Anwort geliefert:
    }
 }
 ```
-
+**Hinweis:** Alternativ kann zur Erzeugung der *Collection* statt des Felds `name` das Feld `title` übergeben werden. Das Feld `title` darf aus einem frei wählbaren Text bestehen. In diesem Fall wird das Feld `name` von CKAN zurückgegeben und muss für die spätere Erzeugung der Verknüpfungen zwischen *Collection* und *Dataset* gespeichert werden. Durch die Übergabe von `title` statt `name` wird in jedem Fall eine Collection erstellt, selbst, wenn bereits eine *Collection* mit gleichem `title` vorhanden ist.
 
 ### Anlegen der Verknüpfung (*Relationship*)
 
