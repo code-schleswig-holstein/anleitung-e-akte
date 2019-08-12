@@ -37,6 +37,7 @@ Für jedes Dokument muss zunächst ein *Dataset* angelegt werden. Zur Beschreibu
 | `notes`       | Beschreibung des *Dataset*, siehe Hinweis |
 
 Zusätzlich können folgende optionale Metadaten gesetzt werden:
+
 | Name des Metadatums   | Beschreibung      |
 |-----------------------|-------------------|
 | `temporal_start`  | Beginn des Bezugszeitraums des *Dataset*, Format siehe Beispiel |
