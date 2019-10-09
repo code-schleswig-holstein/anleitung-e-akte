@@ -250,6 +250,8 @@ Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metada
 | `name`        | Name der Resource, wie er in CKAN angezeigt wird |
 
 
+Hierbei ist zubeachten, dass die PDF-Dateien als Dateisuffix ".pdf" haben.  
+
 ### Beispiel für Upload einer Datei als Resource
 
 Über folgendes Kommando kann ein Client eine Datei hochladen:
