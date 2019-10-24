@@ -78,6 +78,7 @@ curl -X POST \
         "title": "Testdatensatz",
         "license_id": "http://dcat-ap.de/def/licenses/dl-zero-de/2.0",
         "subject": "http://d-nb.info/gnd/4128022-2",
+        "spatial_uri_temp":"http://dcat-ap.de/def/politicalGeocoding/regionalKey/010510011011",
         "owner_org": "2a6d6241-fdfd-4d9a-9106-8c658be43a27",
         "groups": [
             {"name": "soci"},
@@ -87,6 +88,7 @@ curl -X POST \
             {"key": "issued", "value": "2019-07-07T00:00:00"},
             {"key": "temporal_start", "value": "2017-01-01T00:00:00"},
             {"key": "temporal_end", "value": "2017-03-31T00:00:00"}
+
         ],
         "notes": "Dies ist ein Testdatensatz, der über die CKAN-API erstellt wurde.",
         "tags": [
@@ -96,6 +98,9 @@ curl -X POST \
     }'
     
 ```
+
+Für die Ortsangabe liegt eine CSV-Liste 'spatial_mapping.csv' bei.   
+
 
 Auf die obige Anfrage antwortet CKAN folgendermaßen:
 ```json
