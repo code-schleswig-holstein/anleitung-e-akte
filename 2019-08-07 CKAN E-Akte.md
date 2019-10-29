@@ -64,9 +64,10 @@ Zusätzlich können folgende optionale Metadaten gesetzt werden:
 | `temporal_end`    | Ende des Bezugszeitraums des *Dataset*, Format siehe Beispiel |
 | `tags`            | Schlagworte, Format siehe Beispiel |
 | `groups`          | Kategorien denen das *Dataset* zugeordnet ist (siehe Hinweise), Format siehe Beispiel |
+| `spatial_uri_temp`| Räumlicher Bezug zudem das *Dataset* zugeordnet ist, URI aus 'spatial_mapping.csv'|
 
 Die folgenden API-Zugriffe werden über den url-Client cURL (https://de.wikipedia.org/wiki/CURL) durchgeführt. Es kann aber ebenso ein anderer Client verwendet werden.
-
+Für den räumlichen Bezug liegt eine CSV-Liste 'spatial_mapping.csv' bei. 
 
 ### Beispiel für Anlegen eines *Dataset*
 ```bash
@@ -99,7 +100,7 @@ curl -X POST \
     
 ```
 
-Für die Ortsangabe liegt eine CSV-Liste 'spatial_mapping.csv' bei.   
+  
 
 
 Auf die obige Anfrage antwortet CKAN folgendermaßen:
