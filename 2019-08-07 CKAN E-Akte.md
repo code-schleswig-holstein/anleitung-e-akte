@@ -254,6 +254,7 @@ Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metada
 | `package_id`  | `id` des übergeordneten Dataset |
 | `format`      | Dateiformat der Resource |
 | `name`        | Name der Resource, wie er in CKAN angezeigt wird |
+| `hash`        | Hash, der mittels md5 berechnet wurde (optional) |
 
 
 Hierbei ist zubeachten, dass die PDF-Dateien als Dateisuffix ".pdf" haben.  
@@ -268,6 +269,7 @@ curl -H'Authorization: 1dc4ab92-5475-43a9-ae91-3b4aa8ab6aa0' \
     --form upload=@Checkliste-Barrierefreies-PDF.pdf \
     --form package_id=637875e5-fccf-4eab-ae2d-0cffee601725 \
     --form format=PDF \
+    --form hash=66123edf64fabf1c073fc45478bf4a57 \
     --form name='Checkliste barrierefreies PDF'
 ```
 
