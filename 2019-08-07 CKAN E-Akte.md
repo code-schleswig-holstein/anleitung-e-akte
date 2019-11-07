@@ -254,7 +254,7 @@ Zum Anlegen einer *Resource* an ein bestehendes *Dataset* werden folgende Metada
 | `package_id`  | `id` des übergeordneten Dataset |
 | `format`      | Dateiformat der Resource |
 | `name`        | Name der Resource, wie er in CKAN angezeigt wird |
-| `hash`        | Hash, der mittels md5 berechnet wurde (optional) |
+| `hash`        | Hash, der mittels md5 berechnet wurde |
 
 
 Hierbei ist zubeachten, dass die PDF-Dateien als Dateisuffix ".pdf" haben.  
@@ -283,7 +283,7 @@ Daraufhin erhält der Client folgende Antwort von CKAN:
         "cache_last_updated": null,
         "cache_url": null,
         "mimetype_inner": null,
-        "hash": "",
+        "hash": "66123edf64fabf1c073fc45478bf4a57",
         "description": "",
         "format": "PDF",
         "url": "http://192.168.152.133:5000/dataset/b66f2ea4-3a25-42a5-88f8-bffbbdbb46be/resource/0929f4f5-d14c-4a0e-aea7-f293587d5b48/download/checkliste-barrierefreies-pdf.pdf",
@@ -304,7 +304,7 @@ Daraufhin erhält der Client folgende Antwort von CKAN:
 }
 ```
 
-Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden *Resource* und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zuletzt hochgeladene Dokument des Dateiformats unter der url 
+Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden *Resource* und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zuletzt hochgeladene Dokument des Dateiformats unter der url. Der Hashwert wird nur dann zurück geschickt, wenn man einen Hashwert hochgeladen hat.  
 
 ```
 http://transparenz-test.zitsh.decollection/<Name der Collection>/aktuell.<format>
