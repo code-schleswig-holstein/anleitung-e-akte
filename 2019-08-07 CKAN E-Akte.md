@@ -33,12 +33,11 @@ Geschäftsverteilungspläne), werden in einer Sammlung (*Collection*) zusammenge
 
 Für die Authentifizierung verwendet CKAN einen sogenannten `api_key`. 
 
-Im Testsystem wurden zwei Nutzer angelegt:
+Im Testsystem wurde ein Nutzer angelegt: pdv_test.
 
-| organization  | `api_key`                            |
-| ------------- | ------------------------------------ |
-| ministerium_a | 4ef9e986-8437-4ce7-a9cc-f486fba86757 |
-| ministerium_b | a08ebb75-329a-435b-af08-f322a7da41bd | 
+pdv_test gehört den ministerium_a und dem ministerium_b an, 
+Der API-Key lautet b0cb5c23-ae12-4fd6-8f78-4507c8fe900e.
+
 
 Der `api_key` wird über den Header `Authorization` übergeben (siehe Beispiele unten).
 
