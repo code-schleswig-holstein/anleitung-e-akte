@@ -35,8 +35,8 @@ Für die Authentifizierung verwendet CKAN einen sogenannten `api_key`.
 
 Im Testsystem wurde ein Nutzer angelegt: pdv_test.
 
-pdv_test gehört den ministerium_a und dem ministerium_b an, 
-Der API-Key lautet b0cb5c23-ae12-4fd6-8f78-4507c8fe900e.
+pdv_test gehört dem ministerium_a und dem ministerium_b an, 
+Der API-Key für pdv_test lautet b0cb5c23-ae12-4fd6-8f78-4507c8fe900e.
 
 
 Der `api_key` wird über den Header `Authorization` übergeben (siehe Beispiele unten).
