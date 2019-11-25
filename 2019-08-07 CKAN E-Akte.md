@@ -303,6 +303,22 @@ Daraufhin erhält der Client folgende Antwort von CKAN:
 }
 ```
 
+
+Fals die Datei einen Virus enthält, so wird die Nachricht gesendet.
+
+```json
+{
+    "help": "http://transparenz-test.zitsh.de/api/3/action/help_show?
+    name=resource_create",
+    "success": false,
+    "error": {
+        "__type": "Validation Error",
+        "upload": ["Virus gefunden"]
+    }
+}
+```
+
+
 Falls zusätzliche Dateien zu dem gleichen Dokument gehören, so muss der Befehl mit der entsprechenden *Resource* und Namen noch einmal ausgeführt werden. Hierbei ist zu beachten, dass die zeitliche Reihenfolge des Uploads in CKAN abgebildet wird und das zuletzt hochgeladene Dokument des Dateiformats unter der url. Der Hashwert wird nur dann zurück geschickt, wenn man einen Hashwert hochgeladen hat.  
 
 ```
